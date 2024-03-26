@@ -3,13 +3,14 @@ import { Product } from './../../models/product.model';
 
 import { ProductsService } from './../../services/product.service';
 import { CommonModule } from '@angular/common';
+import { ProductComponent } from "../product/product.component";
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  standalone: true,
-  styleUrls: ['./products.component.scss'],
-  imports: [CommonModule]
+    selector: 'app-products',
+    templateUrl: './products.component.html',
+    standalone: true,
+    styleUrls: ['./products.component.scss'],
+    imports: [CommonModule, ProductComponent]
 })
 export class ProductsComponent implements OnInit {
 
@@ -24,7 +25,7 @@ export class ProductsComponent implements OnInit {
   }
 
   getAllProducts() {
-    this.productsService.getAllSimple()
+    this.productsService.getAll()
     .subscribe(products => {
       this.products = products;
     });
