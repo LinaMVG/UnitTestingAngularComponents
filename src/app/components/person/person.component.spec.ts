@@ -5,7 +5,7 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Person } from '../../models/person.model';
 
-fdescribe('PersonComponent', () => {
+describe('PersonComponent', () => {
   let component: PersonComponent;
   let fixture: ComponentFixture<PersonComponent>;
 
@@ -60,5 +60,26 @@ fdescribe('PersonComponent', () => {
     expect(h3?.textContent).toEqual(expectMsg);
   })
 
-  ;
+  it('should display a text with IMC when dcall calcIMC()',()=>{
+    const expectMsg ='OverWeight level 3';
+    component.person = new Person('Marcela', 'Velásquez',24,120,1.65);
+    const button = fixture.debugElement.query(By.css('button.btn-imc')).nativeElement;
+
+    component.calcIMC();
+    fixture.detectChanges();
+
+    expect(button.textContent).toContain(expectMsg)
+  });
+
+  it('should display a text with IMC when do clic',()=>{
+    const expectMsg ='OverWeight level 3';
+    component.person = new Person('Marcela', 'Velásquez',24,120,1.65);
+    const buttonDebug = fixture.debugElement.query(By.css('button.btn-imc'));
+    const buttonElement = buttonDebug.nativeElement
+
+    buttonDebug.triggerEventHandler('click',null);
+    fixture.detectChanges();
+
+    expect(buttonElement.textContent).toContain(expectMsg)
+  });
 });
