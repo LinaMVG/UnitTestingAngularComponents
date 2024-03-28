@@ -35,6 +35,7 @@
 
 import { Component, Directive, ElementRef, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 @Component({
@@ -43,9 +44,12 @@ import { By } from '@angular/platform-browser';
     <h5 highligth="yellow">Hay un color yellow</h5>
     <p highligth>parrafo</p>
     <p>Otro parrafo</p>
+    <input [(ngModel)]="color"  type="text" [highligth]="color" />
   `,
 })
-class HostComponent {}
+class HostComponent {
+  color = 'gray';
+}
 
 @Directive({
   selector: '[highligth]',
@@ -76,6 +80,7 @@ describe('HighligthDirective', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HostComponent, MockHighligthDirective],
+      imports: [FormsModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);
@@ -86,7 +91,7 @@ describe('HighligthDirective', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should have 3 highlight elements', () => {
+  it('should have 4 highlight elements', () => {
     const elements = fixture.debugElement.queryAll(
       By.directive(MockHighligthDirective)
     );
@@ -94,8 +99,8 @@ describe('HighligthDirective', () => {
       By.css('*:not([highligth])')
     );
 
-    expect(elements.length).toEqual(3);
-    expect(elementsWhithout.length).toEqual(1);
+    expect(elements.length).toEqual(4);
+    expect(elementsWhithout.length).toEqual(2);//lo pasa editando xq el selector no lo esta tomando
   });
 
   it('should the elements be match with bgColor', () => {
@@ -114,6 +119,20 @@ describe('HighligthDirective', () => {
 
   //   expect(titleDe.nativeElement.style.backgroundColor).toEqual(dir.defaultColor);
   // });
+
+  it('should bind <input> and change the bgColor', () => {
+    const inputDe = fixture.debugElement.query(By.css('input'));
+    const inputEl: HTMLInputElement =  inputDe.nativeElement;
+
+    expect(inputEl.style.backgroundColor).toEqual('gray');
+
+    inputEl.value='red';
+    inputEl.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(inputEl.style.backgroundColor).toEqual('red');
+    expect(fixture.componentInstance.color).toEqual('red');
+  });
 
 
 });
