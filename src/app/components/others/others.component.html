@@ -3,4 +3,9 @@
   <h5 highligth>Hay un valor default</h5>
   <h5 highligth="yellow">Hay un color yellow</h5>
   <input [(ngModel)]="color"  type="text" [highligth]="color" />
+
+  <h3>Pipes</h3>
+  <p>{{'my text' | reserve}}</p>
+  <input [(ngModel)]="text"  />
+  <p>{{text | reserve}}</p>
 </section>
